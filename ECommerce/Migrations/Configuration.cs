@@ -8,10 +8,9 @@ namespace ECommerce.Migrations
     internal sealed class Configuration : DbMigrationsConfiguration<ECommerce.Models.ECommerceContext>
     {
         public Configuration()
-        {
+        {   
             AutomaticMigrationsEnabled = true;
             AutomaticMigrationDataLossAllowed = true;
-            ContextKey = "ECommerce.Models.ECommerceContext";
         }
 
         protected override void Seed(ECommerce.Models.ECommerceContext context)
