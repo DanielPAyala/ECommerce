@@ -8,24 +8,38 @@ namespace ECommerce.Classes
 {
     public class FilesHelper
     {
-        public static string UploadPhoto(HttpPostedFileBase file, string folder)
+        public static string UploadPhoto(HttpPostedFileBase file, string folder, string nombre)
         {
-            string path = string.Empty;
-            string pic = string.Empty;
-
-            if (file != null)
+            if (file == null || string.IsNullOrEmpty(folder) || string.IsNullOrEmpty(nombre))
             {
-                pic = Path.GetFileName(file.FileName);
-                path = Path.Combine(HttpContext.Current.Server.MapPath(folder), pic);
-                file.SaveAs(path);
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    file.InputStream.CopyTo(ms);
-                    byte[] array = ms.GetBuffer();
-                }
+                return string.Empty;
             }
 
-            return pic;
+            try
+            {
+                string path = string.Empty;
+                string pic = string.Empty;
+                string ext = string.Empty;
+
+                if (file != null)
+                {
+                    ext = Path.GetExtension(file.FileName);
+                    pic = string.Format("{0}{1}", nombre, ext);
+                    path = Path.Combine(HttpContext.Current.Server.MapPath(folder), string.Format("{0}{1}", nombre, ext));
+                    file.SaveAs(path);
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        file.InputStream.CopyTo(ms);
+                        byte[] array = ms.GetBuffer();
+                    }
+                }
+
+                return pic;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
         }
 
     }
